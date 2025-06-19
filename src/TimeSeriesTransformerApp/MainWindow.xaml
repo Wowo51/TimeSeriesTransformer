@@ -1,0 +1,117 @@
+﻿<Window x:Class="TimeSeriesTransformerApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TimeSeriesTransformerApp"
+        mc:Ignorable="d"
+        Title="TimeSeriesTransformer" Height="450" Width="800" WindowState="Maximized">
+    <DockPanel Margin="8">
+
+        <!-- ────────────────  menu bar  ──────────────── -->
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open CSV…" Click="OpenCsv_Click"/>
+                <MenuItem Header="_Save Model…" x:Name="SaveModelItem"
+                  Click="SaveModel_Click"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Click="Exit_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- ────────────────  log pane  ──────────────── -->
+        <TextBox x:Name="LogBox"
+                 DockPanel.Dock="Bottom"
+                 Height="160"
+                 FontFamily="Consolas"
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto"
+                 IsReadOnly="True"
+                 TextWrapping="NoWrap"/>
+
+        <!-- ────────────────  main grid  ──────────────── -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="260"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--  left-hand parameter panel  -->
+            <ScrollViewer Grid.Column="0">
+                <StackPanel Margin="0,0,8,0">
+
+                    <!-- style for all text boxes in this panel -->
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Margin"              Value="0,2,0,8"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <TextBlock FontSize="14"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"
+                               Text="Training Parameters"/>
+
+                    <!-- input controls -->
+                    <TextBlock Text="Epochs"/>
+                    <TextBox  x:Name="EpochsBox"  Text="100"/>
+
+                    <TextBlock Text="Learning Rate"/>
+                    <TextBox  x:Name="LearnRateBox" Text="0.001"/>
+
+                    <TextBlock Text="Sequence Length"/>
+                    <TextBox  x:Name="SeqLenBox" Text="60"/>
+
+                    <TextBlock Text="Forecast Horizon"/>
+                    <TextBox  x:Name="HorizonBox" Text="5"/>
+
+                    <TextBlock Text="dModel"/>
+                    <TextBox  x:Name="DModelBox" Text="128"/>
+
+                    <TextBlock Text="nHead"/>
+                    <TextBox  x:Name="NHeadBox" Text="8"/>
+
+                    <TextBlock Text="Encoder Layers"/>
+                    <TextBox  x:Name="LayersBox" Text="4"/>
+
+                    <TextBlock Text="Feed-forward Dim"/>
+                    <TextBox  x:Name="FFDimBox" Text="1024"/>
+
+                    <TextBlock Text="Dropout"/>
+                    <TextBox  x:Name="DropoutBox" Text="0.2"/>
+
+                    <Button Content="Start Training"
+                            Click="StartTrain_Click"
+                            Margin="0,4,0,0"/>
+
+                    <Button Content="Cancel"
+                            x:Name="CancelBtn"
+                            IsEnabled="False"
+                            Click="CancelTrain_Click"
+                            Margin="0,4,0,0"/>
+
+                    <Separator Margin="0,10,0,0"/>
+
+                    <TextBlock Text="CSV Loaded:"/>
+                    <TextBlock x:Name="CsvFileLabel"
+                               Text="(none)"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!--  right-hand error chart  -->
+            <Border Grid.Column="1"
+                    BorderBrush="Gray"
+                    BorderThickness="1">
+                <Canvas x:Name="ChartCanvas"
+                        Background="White">
+                    <!-- error curve drawn here at runtime -->
+                    <Polyline x:Name="ErrorLine"
+                              Stroke="SteelBlue"
+                              StrokeThickness="2"/>
+                </Canvas>
+            </Border>
+        </Grid>
+    </DockPanel>
+</Window>
